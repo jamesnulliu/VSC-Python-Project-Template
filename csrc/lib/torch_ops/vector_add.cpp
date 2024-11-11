@@ -1,9 +1,9 @@
-#include "project-name/math/vec_add.hpp"
-
 #include <torch/extension.h>
 #include <torch/library.h>
 
-auto vector_add(torch::Tensor A, torch::Tensor B) -> torch::Tensor
+#include "project-name/math/vec_add.hpp"
+
+auto vector_add(const torch::Tensor& A, const torch::Tensor& B) -> torch::Tensor
 {
     auto N = A.size(0);
     auto C = torch::empty_like(A);

@@ -55,15 +55,15 @@ PACKAGE_DIR = osp.join(ABS_SETUP_DIR, "example_package")
 setup(
     ext_modules=[
         CMakeExtension(
-            name="example_package._torch_ops_cxx",
+            name="example_package._torch_ops",
             source_dir=CSRC_DIR,
             build_dir=BUILD_DIR,
-            install_dir=osp.join(PACKAGE_DIR, "_torch_ops_cxx"),
+            install_dir=osp.join(PACKAGE_DIR, "_torch_ops"),
         )
     ],
     cmdclass={"build_ext": CMakeBuild},
     packages=find_packages(),
     package_data={
-        "example_package": ["_torch_ops_cxx/lib/*.so", "_torch_ops_cxx/lib/*.pyd"]
+        "example_package": ["_torch_ops/lib/*.so", "_torch_ops/lib/*.pyd"]
     },
 )

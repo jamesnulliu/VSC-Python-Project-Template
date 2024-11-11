@@ -26,11 +26,9 @@ auto main() -> int
                                            int(a.size()));
     printVec(c);
 
-#if defined(BUILD_CUDA_EXAMPLES)
     project_namespace::cuda::launch_vec_add(a.data(), b.data(), c.data(),
                                             int(a.size()));
     printVec(c);
-#endif
 
     return 0;
 }
