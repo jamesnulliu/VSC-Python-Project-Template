@@ -1,26 +1,61 @@
 # Env Variables: CC, CXX, NVCC_CCBIN
 
-# [TODO]
-# |- Only keep the required paths in PATH
-prune_env_path() {
+# @func  windows_prune_env_path
+# @brief Prune the PATH environment variable to only include necessary paths.
+#        This is necessary because the PATH environment variable on Windows
+#        can get very long and cause issues with the CMake generator.
+#
+# @note  You should modify the function to include the paths that are necessary
+#        for your build.
+windows_prune_env_path() {
+    # Return if not windows
+    if [[ "$OSTYPE" != "msys" ]]; then return; fi
+
+    echo "[build.sh] Pruning PATH environment variable..."
+
+    local CMAKE_DIR=$(dirname $(which cmake))
+    local NINJA_DIR=$(dirname $(which ninja))
+
     IFS=':' read -r -a paths <<< "$PATH"
-    new_path=""
-    # Remove duplicates from PATH
-    unique_paths=()
+    local new_path=""
+
+    # Include only the necessary paths
+    # You may want to add "conda" to the list if you are using Anaconda/Miniconda
+    local -a include_paths=("/usr/bin" "cuda" "windows kits" "microsoft visual studio")
+    local -a filtered_paths
     for path in "${paths[@]}"; do
-        if [[ ! " ${unique_paths[@]} " =~ " ${path} " ]]; then
-            if [ -n "$new_path" ]; then
+        local lowercase_path=$(echo "$path" | tr '[:upper:]' '[:lower:]')
+        for keyword in "${include_paths[@]}"; do
+            if [[ "$lowercase_path" == *"$keyword"* ]]; then
+                filtered_paths+=("$path")
+                break
+            fi
+        done
+    done
+
+    # Insert the CMake and Ninja directories at the beginning of PATH
+    local filtered_paths=($CMAKE_DIR $NINJA_DIR "${filtered_paths[@]}")
+
+    # Remove duplicates
+    local -A unique_paths
+    local new_path=""
+    for path in "${filtered_paths[@]}"; do
+        if [[ -z "${unique_paths[$path]}" ]]; then
+            if [[ -n "$new_path" ]]; then
                 new_path+=":"
             fi
             new_path+="$path"
-            unique_paths+=("$path")
+            unique_paths[$path]=1
         fi
     done
-    # Update PATH
+    
+    # Update the PATH environment variable
     PATH=$new_path
+
+    echo "[build.sh] PATH environment variable pruned."
 }
 
-prune_env_path
+windows_prune_env_path
 
 SOURCE_DIR=.
 BUILD_DIR=./build
