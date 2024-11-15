@@ -4,7 +4,7 @@
 #
 # @note This file shoule NEVER include any other file (to avoid circular dependencies).
 # @note Several parameters SHOULD be set BEFORE including this file:
-#         - `LOG_PREFIX`: Prefix for logging. Default: "ᓚᘏᗢ".
+#         - `LOG_PREFIX`: Prefix for logging. Default: "LogPrefix".
 # ==================================================================================================
 
 string(ASCII 27 Esc)

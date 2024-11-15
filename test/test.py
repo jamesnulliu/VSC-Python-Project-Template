@@ -6,7 +6,6 @@ B = torch.tensor([4, 5, 6], dtype=torch.float32)
 
 print(torch.ops.example_package.vector_add(A, B))
 
-# [FIXME] Torch not compiled with CUDA enabled?
 A = A.cuda()
 B = B.cuda()
 

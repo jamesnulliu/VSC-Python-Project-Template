@@ -13,4 +13,4 @@ def load_torch_ops(lib_dir: str):
                 torch.ops.load_library(os.path.join(root, file))
 
 
-load_torch_ops(osp.join(PACKAGE_DIR, "_torch_ops_cxx"))
+load_torch_ops(osp.join(PACKAGE_DIR, "_torch_ops"))

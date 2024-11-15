@@ -48,22 +48,24 @@ class CMakeBuild(build_ext):
 
 
 ABS_SETUP_DIR = osp.dirname(osp.abspath(__file__))
-BUILD_DIR = osp.join(ABS_SETUP_DIR, "build")
-CSRC_DIR = osp.join(ABS_SETUP_DIR, "csrc")
-PACKAGE_DIR = osp.join(ABS_SETUP_DIR, "example_package")
+ABS_BUILD_DIR = osp.join(ABS_SETUP_DIR, "build")
+ABS_CSRC_DIR = osp.join(ABS_SETUP_DIR, "csrc")
+ABS_PACKAGE_DIR = osp.join(ABS_SETUP_DIR, "example_package")
+ABS_TORCH_OPS_DIR = osp.join(ABS_PACKAGE_DIR, "_torch_ops")
 
 setup(
     ext_modules=[
         CMakeExtension(
             name="example_package._torch_ops",
-            source_dir=CSRC_DIR,
-            build_dir=BUILD_DIR,
-            install_dir=osp.join(PACKAGE_DIR, "_torch_ops"),
+            source_dir=ABS_CSRC_DIR,
+            build_dir=ABS_BUILD_DIR,
+            install_dir=ABS_TORCH_OPS_DIR,
         )
     ],
     cmdclass={"build_ext": CMakeBuild},
     packages=find_packages(),
     package_data={
+        # Use relative path here
         "example_package": ["_torch_ops/lib/*.so", "_torch_ops/lib/*.pyd"]
     },
 )

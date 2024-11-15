@@ -3,13 +3,20 @@ A Template of Python Project in Visual Studio Code with Github Actions CI/CD (Es
 
 ## How to Build
 
+Create a new conda environment:
+
 ```bash
 conda create -n pytemplate python=3.12
 conda activate pytemplate
-pip install .
 ```
 
-`torch.ops.example_package.vector_add` will be available after installation.
+Install `example_package`:
+
+```bash
+pip3 install .
+```
+
+`torch.ops.example_package.vector_add` will be available after installation; See [test.py](test/test.py) for usage.
 
 ## How to Test
 
