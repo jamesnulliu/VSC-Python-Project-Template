@@ -63,4 +63,4 @@ void launch_vec_add(const float* a, const float* b, float* c, int n)
     cudaFree(d_c);
 }
 
-}  // namespace project_namespace::cuda
+}  // namespace template_project_name::cuda

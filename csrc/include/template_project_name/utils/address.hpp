@@ -48,4 +48,4 @@ constexpr auto computeOffset(ArgsT... args) -> OffsetT
     return offset;
 }
 
-}  // namespace _template_project_name_
+}  // namespace template_project_name
