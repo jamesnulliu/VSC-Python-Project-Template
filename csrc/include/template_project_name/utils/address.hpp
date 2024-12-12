@@ -1,13 +1,17 @@
 #pragma once
 
-#include <array>
 #include <cassert>
-#include <cstdint>
-#include <tuple>
+#include <cstddef>
 
-namespace project_namespace
+#if __cplusplus < 202002L
+    #include <array>
+#else
+    #include <tuple>
+    #include <utility>
+#endif
+
+namespace template_project_name
 {
-
 /**
  * @brief Compute the offset of a multi-dimensional array.
  *
@@ -27,14 +31,12 @@ constexpr auto computeOffset(ArgsT... args) -> OffsetT
 
 #if __cplusplus >= 202002L
     auto params = std::make_tuple(static_cast<OffsetT>(args)...);
-    [&]<std::size_t... I>(std::index_sequence<I...>)
-    {
+    [&]<std::size_t... I>(std::index_sequence<I...>) {
         ((I < nDims ? (offset += std::get<nDims - 1 - I>(params) * stride,
                        stride *= std::get<nArgs - 1 - I>(params))
                     : 0),
          ...);
-    }
-    (std::make_index_sequence<nDims>{});
+    }(std::make_index_sequence<nDims>{});
 #else
     auto params = std::array{static_cast<OffsetT>(args)...};
     for (std::size_t i = 0; i < nDims; ++i) {
@@ -46,4 +48,4 @@ constexpr auto computeOffset(ArgsT... args) -> OffsetT
     return offset;
 }
 
-}  // namespace project_namespace
+}  // namespace _template_project_name_

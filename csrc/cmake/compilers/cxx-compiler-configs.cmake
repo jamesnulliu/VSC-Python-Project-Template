@@ -3,13 +3,15 @@
 # @brief Compiler configurations for the host.
 #
 # @note Several parameters SHOULD be set BEFORE including this file:
-#         - `ENV:CXX`: C++ Compiler. Default: auto-detected.
+#         - `ENV{CXX}`: C++ Compiler. Default: auto-detected.
 #         - `CMAKE_CXX_STANDARD`: C++ Standard. Default: 20.
+#         - `CMAKE_CXX_SCAN_FOR_MODULES`: Whether to use modules. Default: OFF.
 #         - `STACK_SIZE`: Stack size for the executable. Default: 1048576 (1MB).
 # ==================================================================================================
 
-include(${PROJECT_SOURCE_DIR}/cmake/utils/logging.cmake)
+include(${PROJECT_SOURCE_DIR}/cmake/utils/common.cmake)
 
+set_default_values(CMAKE_CXX_SCAN_FOR_MODULES OFF)
 enable_language(CXX)
 
 # Generate compile_commands.json in build directory
@@ -37,7 +39,7 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     string(APPEND CMAKE_CXX_FLAGS_DEBUG " -g")
     # Set stack size
     if (WIN32)
-        string(APPEND CMAKE_EXE_LINKER_FLAGS " -Wl,--stack,${STACK_SIZE}")
+        string(APPEND CMAKE_EXE_LINKER_FLAGS " -Wl,-stack,${STACK_SIZE}")
     else()
         string(APPEND CMAKE_EXE_LINKER_FLAGS " -Wl,-zstack-size=${STACK_SIZE}")
     endif()
@@ -52,7 +54,7 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     else()
         string(APPEND CMAKE_EXE_LINKER_FLAGS " -Wl,-zstack-size=${STACK_SIZE}")
     endif()
- ## [TODO] @jamesnulliu
+# @todo @jamesnulliu
 # |- Add compiler flags for other compilers
 else()
     log_fatal("Unsupported compiler")

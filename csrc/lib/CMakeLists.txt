@@ -4,7 +4,7 @@ file(GLOB_RECURSE CXX_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
 file(GLOB_RECURSE CUDA_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.cu)
 
 # @see "https://cmake.org/cmake/help/latest/module/FindPython.html#commands"
-Python_add_library(${LIB_NAME} MODULE WITH_SOABI ${CXX_SOURCES} ${CUDA_SOURCES})
+Python_add_library(${LIB_NAME} SHARED ${CXX_SOURCES} ${CUDA_SOURCES})
 add_library(${PROJECT_NAMESPACE}${LIB_NAME} ALIAS ${LIB_NAME})
 
 target_include_directories(
@@ -20,8 +20,8 @@ target_link_libraries(
 )
 
 target_compile_definitions(${LIB_NAME} 
-    PRIVATE $<$<BOOL:${BUILD_SHARED_LIBS}>:VSC_CPP_TEMPLATE_EXPORT>
-    INTERFACE $<$<BOOL:${BUILD_SHARED_LIBS}>:VSC_CPP_TEMPLATE_IMPORT>
+    PRIVATE $<$<BOOL:${BUILD_SHARED_LIBS}>:VSC_PYTHON_TEMPLATE_EXPORT>
+    INTERFACE $<$<BOOL:${BUILD_SHARED_LIBS}>:VSC_PYTHON_TEMPLATE_IMPORT>
 )
 
 # @see "cmake/utils/lib-install.cmake"

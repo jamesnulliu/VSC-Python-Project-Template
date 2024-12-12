@@ -1,11 +1,11 @@
-include(${PROJECT_SOURCE_DIR}/cmake/utils/logging.cmake)
-include(${PROJECT_SOURCE_DIR}/cmake/utils/run-python.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/../utils/logging.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/../utils/run-python.cmake)
 
 set(PY_RESULT)
 set(PY_OUTPUT)
 set(PY_ERROR)
 
-# @see "./cmake/utils/python.cmake"
+# @see "../utils/python.cmake"
 run_python(
     "import torch;print(torch.utils.cmake_prefix_path)"
     PY_RESULT PY_OUTPUT PY_ERROR

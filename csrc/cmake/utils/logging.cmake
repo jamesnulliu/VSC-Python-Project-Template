@@ -3,8 +3,6 @@
 # @brief Compiler configurations for cuda.
 #
 # @note This file shoule NEVER include any other file (to avoid circular dependencies).
-# @note Several parameters SHOULD be set BEFORE including this file:
-#         - `LOG_PREFIX`: Prefix for logging. Default: "LogPrefix".
 # ==================================================================================================
 
 string(ASCII 27 Esc)
@@ -19,7 +17,7 @@ set(LOG_WHITE "${Esc}[0;37m")
 set(LOG_RESET "${Esc}[m")
 
 if(NOT DEFINED LOG_PREFIX)
-    set(LOG_PREFIX "LogPrefix")
+    set(LOG_PREFIX "_template_project_name_")
 endif()
 
 function(log_info msg)

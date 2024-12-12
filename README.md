@@ -13,7 +13,7 @@ conda activate pytemplate
 Install `example_package`:
 
 ```bash
-pip3 install .
+pip3 install --no-build-isolation .
 ```
 
 `torch.ops.example_package.vector_add` will be available after installation; See [test.py](test/test.py) for usage.

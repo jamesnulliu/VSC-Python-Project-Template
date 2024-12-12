@@ -1,15 +1,13 @@
-#include <atomic>
 #include <cstdint>
 #include <cstdio>
 
-#include "project-name/math/vec_add.hpp"
-#include "project-name/utils/address.hpp"
+#include "template_project_name/math/vec_add.hpp"
+#include "template_project_name/utils/address.hpp"
 
-namespace project_namespace::cpu
+namespace template_project_name::cpu
 {
 
-void launch_vec_add(const float* const a, const float* const b, float* const c,
-                    const int n)
+void launch_vec_add(const float* a, const float* b, float* c, int n)
 {
     ::printf("Hello World from CPU!\n");
     ::printf("Vector size: %d\n", n);

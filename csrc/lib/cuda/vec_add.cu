@@ -1,17 +1,18 @@
 #include <cstdint>
 #include <cstdio>
-#include <tuple>
+#include <cuda_runtime_api.h>
+#include <driver_types.h>
 
 #include <cuda_runtime.h>
 
-#include "project-name/math/vec_add.hpp"
-#include "project-name/utils/address.hpp"
+#include "template_project_name/math/vec_add.hpp"
+#include "template_project_name/utils/address.hpp"
 
-namespace project_namespace::cuda
+namespace template_project_name::cuda
 {
 
-__global__ void vec_add(const float* const a, const float* const b,
-                        float* const c, const std::int32_t n)
+__global__ void vec_add(const float* a, const float* b, float* c,
+                        std::int32_t n)
 {
     const std::uint32_t threadIndex = threadIdx.x;
     std::uint32_t smId;
@@ -33,8 +34,7 @@ __global__ void vec_add(const float* const a, const float* const b,
     }
 }
 
-void launch_vec_add(const float* const a, const float* const b, float* const c,
-                    const int n)
+void launch_vec_add(const float* a, const float* b, float* c, int n)
 {
     ::printf("Hello World from CUDA!\n");
     ::printf("Vector size: %d\n", n);
