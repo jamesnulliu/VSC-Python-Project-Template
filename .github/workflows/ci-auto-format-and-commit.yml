@@ -32,7 +32,7 @@ jobs:
           wget https://apt.llvm.org/llvm.sh && sudo bash ./llvm.sh 20 && rm ./llvm.sh
           sudo apt-get install clang-format-20
           sudo ln -sf $(which clang-format-20) /usr/bin/clang-format
-          python -m pip install black
+          python -m pip install ruff
 
       - name: Run format script
         shell: bash

@@ -1,11 +1,12 @@
 from pathlib import Path
 import sys
-from os import path as osp
 import subprocess
 from setuptools import setup, Extension, find_packages
 from setuptools.command.build_ext import build_ext
 
 """ You may want to change the following variables to customize your project """
+# Root directory:
+ROOT_DIR = Path(__file__).parent
 # Name of your package; Must match the directory name under `CSRC_DIR`:
 PKG_NAME = "example_package"
 # Path to the directory of setup.py file:
@@ -31,7 +32,6 @@ class CMakeExtension(Extension):
 
 
 class CMakeBuild(build_ext):
-
     def run(self):
         try:
             subprocess.check_output(["cmake", "--version"])
@@ -42,20 +42,19 @@ class CMakeBuild(build_ext):
             self.build_extension(ext)
 
     def build_extension(self, ext: CMakeExtension):
-        build_args = [
-            "-S",
-            ext.source_dir,
-            "-B",
-            ext.build_dir,
-            "Release",
-        ]
+        build_args = ["-S", ext.source_dir,
+                      "-B", ext.build_dir,
+                      "Release"]  # fmt: skip
         # If Current Platform is Windows
         if sys.platform == "win32":
             subprocess.check_call(
-                [R"csrc\scripts\msvc-bash.bat", R"csrc\scripts\build.sh"] + build_args
+                [R"csrc\scripts\msvc-bash.bat", R"csrc\scripts\build.sh"]
+                + build_args
             )
         else:
-            subprocess.check_call(["bash", "csrc/scripts/build.sh"] + build_args)
+            subprocess.check_call(
+                ["bash", "csrc/scripts/build.sh"] + build_args
+            )
         install_args = [
             "--install",
             ext.build_dir,
@@ -63,6 +62,29 @@ class CMakeBuild(build_ext):
             ext.install_dir,
         ]
         subprocess.check_call(["cmake"] + install_args)
+
+
+def get_requirements(root_dir: Path) -> list[str]:
+    """Get Python package dependencies from requirements.txt."""
+    requirements_dir = root_dir / "requirements"
+
+    def _read_requirements(filename: str) -> list[str]:
+        with open(requirements_dir / filename) as f:
+            requirements = f.read().strip().split("\n")
+        resolved_requirements = []
+        for line in requirements:
+            if line.startswith("-r "):
+                resolved_requirements += _read_requirements(line.split()[1])
+            elif (
+                not line.startswith("--")
+                and not line.startswith("#")
+                and line.strip() != ""
+            ):
+                resolved_requirements.append(line)
+        return resolved_requirements
+
+    requirements = _read_requirements("common.txt")
+    return requirements
 
 
 setup(
@@ -81,4 +103,5 @@ setup(
         # Use relative path here
         PKG_NAME: ["_torch_ops/lib/*.so", "_torch_ops/lib/*.dll"]
     },
+    install_requires=get_requirements(ROOT_DIR),
 )

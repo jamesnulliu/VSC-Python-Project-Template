@@ -1,5 +1,5 @@
 # [NOTE] 
-# |- This script is used to format the code using clang-format and black.
+# |- This script is used to format the code using clang-format and ruff.
 # |- Although CI pipeline is configured to format the code after pushing to main,
 # |- it is still recommended to run this script manually before committing the code.
 
@@ -40,7 +40,7 @@ if [[ "$FORMAT_PYTHON" == "true" ]]; then
     echo "Formatting Python files..."
     files=$(git ls-files '*.py')
     if [[ -n "$files" ]]; then
-        black --quiet --fast $files
+        ruff format $files
     fi
 fi
 
