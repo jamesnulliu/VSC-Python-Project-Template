@@ -4,7 +4,7 @@
         "twxs.cmake",  // cmake
         "ms-vscode.cpptools",  // C/C++
         "ms-python.python",  // Python
-        "ms-python.black-formatter",  // Python formatter
         "njpwerner.autodocstring",  // Python docstring generator
+        "charliermarsh.ruff",
     ]
 }

@@ -1,10 +1,10 @@
 #include <cstdint>
 #include <cstdio>
 
-#include "template_project_name/math/vec_add.hpp"
-#include "template_project_name/utils/address.hpp"
+#include "simple_py/math/vec_add.hpp"
+#include "simple_py/utils/address.hpp"
 
-namespace template_project_name::cpu
+namespace simple_py::cpu
 {
 
 void launch_vec_add(const float* a, const float* b, float* c, int n)
@@ -19,4 +19,4 @@ void launch_vec_add(const float* a, const float* b, float* c, int n)
     }
 }
 
-}  // namespace template_project_name::cpu
+}  // namespace simple_py::cpu

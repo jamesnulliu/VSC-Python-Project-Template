@@ -8,27 +8,41 @@ from setuptools.command.build_ext import build_ext
 # Root directory:
 ROOT_DIR = Path(__file__).parent
 # Name of your package; Must match the directory name under `CSRC_DIR`:
-PKG_NAME = "example_package"
+PKG_NAME = "simple_py"
 # Path to the directory of setup.py file:
 SETUP_DIR = Path(__file__).parent.absolute()
 # Where to create the cmake build directory:
 BUILD_DIR = Path(SETUP_DIR, "build")
 # Path to the c/c++ source directory:
 CSRC_DIR = Path(SETUP_DIR, "csrc")
-# Where to install the op library:
-TORCH_OPS_DIR = Path(SETUP_DIR, "src", PKG_NAME, "_torch_ops")
+# Name of the extended C library module:
+LIB_NAME = "extended_clib"
 """''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''"""
 
 
 class CMakeExtension(Extension):
-    def __init__(self, name, source_dir, build_dir, install_dir):
+    def __init__(
+        self, name, source_dir, build_dir, build_args: list[str] = None
+    ):
+        """
+        CMake extension for setuptools.
+
+        Arguments
+        ---------
+        name : str
+            Name of the extension.
+        source_dir : str | Path
+            Path to the C/C++ source directory.
+        build_dir : str | Path
+            Path to the build directory.
+        build_args : list[str], optional
+            Additional build arguments for CMake.
+            Check `csrc/scripts/build.sh` for usage.
+        """
         Extension.__init__(self, name, sources=[])
-        # C/C++ source directory
         self.source_dir = Path(source_dir).absolute()
-        # Build directory
         self.build_dir = Path(build_dir).absolute()
-        # Lib installation directory
-        self.install_dir = Path(install_dir).absolute()
+        self.build_args = ["Release"] if build_args is None else build_args
 
 
 class CMakeBuild(build_ext):
@@ -42,9 +56,12 @@ class CMakeBuild(build_ext):
             self.build_extension(ext)
 
     def build_extension(self, ext: CMakeExtension):
+        ext_install_dir = (
+            Path(self.get_ext_fullpath(ext.name)).parent / LIB_NAME
+        )
         build_args = ["-S", ext.source_dir,
-                      "-B", ext.build_dir,
-                      "Release"]  # fmt: skip
+                      "-B", ext.build_dir]  # fmt: skip
+        build_args += ext.build_args
         # If Current Platform is Windows
         if sys.platform == "win32":
             subprocess.check_call(
@@ -59,7 +76,7 @@ class CMakeBuild(build_ext):
             "--install",
             ext.build_dir,
             "--prefix",
-            ext.install_dir,
+            ext_install_dir,
         ]
         subprocess.check_call(["cmake"] + install_args)
 
@@ -90,18 +107,14 @@ def get_requirements(root_dir: Path) -> list[str]:
 setup(
     ext_modules=[
         CMakeExtension(
-            name=f"{PKG_NAME}._torch_ops",
+            name=f"{PKG_NAME}.extended_clib",
             source_dir=CSRC_DIR,
             build_dir=BUILD_DIR,
-            install_dir=TORCH_OPS_DIR,
+            build_args=None,
         )
     ],
     cmdclass={"build_ext": CMakeBuild},
     packages=find_packages(where="./src"),
-    package_dir={PKG_NAME: "./src"},
-    package_data={
-        # Use relative path here
-        PKG_NAME: ["_torch_ops/lib/*.so", "_torch_ops/lib/*.dll"]
-    },
+    package_dir={PKG_NAME: f"./src/{PKG_NAME}"},
     install_requires=get_requirements(ROOT_DIR),
 )

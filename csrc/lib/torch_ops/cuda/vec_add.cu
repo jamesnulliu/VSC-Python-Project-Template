@@ -5,10 +5,10 @@
 
 #include <cuda_runtime.h>
 
-#include "template_project_name/math/vec_add.hpp"
-#include "template_project_name/utils/address.hpp"
+#include "simple_py/math/vec_add.hpp"
+#include "simple_py/utils/address.hpp"
 
-namespace template_project_name::cuda
+namespace simple_py::cuda
 {
 
 __global__ void vec_add(const float* a, const float* b, float* c,
@@ -22,7 +22,7 @@ __global__ void vec_add(const float* a, const float* b, float* c,
     std::uint32_t laneId;
     asm volatile("mov.u32 %0, %laneid;" : "=r"(laneId));
 
-    int i = blockIdx.x * blockDim.x + threadIdx.x;
+    int i = (blockIdx.x * blockDim.x) + threadIdx.x;
 
     if (i < n) {
         ::printf("Thread %d: %f + %f = %f\n", i, a[i], b[i], a[i] + b[i]);
@@ -63,4 +63,4 @@ void launch_vec_add(const float* a, const float* b, float* c, int n)
     cudaFree(d_c);
 }
 
-}  // namespace template_project_name::cuda
+}  // namespace simple_py::cuda

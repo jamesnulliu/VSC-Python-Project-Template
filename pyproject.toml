@@ -1,12 +1,11 @@
 [build-system]
-requires = ["setuptools>=42", "wheel", "torch>=2.0.0"]
+requires = ["setuptools>=42", "wheel", "torch==2.8.0", "pybind11"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "example_package"
+name = "simple_py"
 version = "0.1.0"
 authors = [{ name = "jamesnulliu", email = "jamesnulliu@gmail.com" }]
 readme = "README.md"
 requires-python = ">=3.10, <3.13"
-license = { file = "LICENSE" }
 dynamic = ["dependencies"]

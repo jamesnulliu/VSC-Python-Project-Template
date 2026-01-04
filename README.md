@@ -6,21 +6,20 @@ A Template of Python Project in Visual Studio Code with Github Actions CI/CD (Es
 Create a new conda environment:
 
 ```bash
-conda create -n pytemplate python=3.12
-conda activate pytemplate
+$ uv venv -p 3.12
+$ source .venv/bin/activate
 ```
 
-Install `example_package`:
+Install `simple_py`:
 
 ```bash
-pip3 install --no-build-isolation .
+$ uv install -v .
 ```
 
-`torch.ops.example_package.vector_add` will be available after installation; See [test.py](test/test.py) for usage.
+`torch.ops.simple_py.vector_add` will be available after installation; See [test.py](test/test.py) for usage.
 
 ## How to Test
 
 ```bash
-conda activate pytemplate
 python test/test.py
 ```

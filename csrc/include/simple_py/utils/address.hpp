@@ -10,7 +10,7 @@
     #include <utility>
 #endif
 
-namespace template_project_name
+namespace simple_py
 {
 /**
  * @brief Compute the offset of a multi-dimensional array.
@@ -48,4 +48,4 @@ constexpr auto computeOffset(ArgsT... args) -> OffsetT
     return offset;
 }
 
-}  // namespace template_project_name
+}  // namespace simple_py

@@ -164,7 +164,8 @@ cython_debug/
 # Not ignore anything from ./csrc
 !/csrc/*
 # But ignore ./build in case someone build with -B ./csrc/build (better not do this)
-/csrc/build
 
 # Ignore installation directory
 /example_package/_torch_ops
+
+/src/simple_py/extended_clib
