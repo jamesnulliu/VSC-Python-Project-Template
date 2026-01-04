@@ -45,9 +45,9 @@ PYBIND11_MODULE(extended_clib, m)
 
     // Bind the Pet class
     py::class_<Pet>(m, "Pet")
-        .def(py::init<const std::string&>())  // Constructor
-        .def("setName", &Pet::setName)        // Setter
-        .def("getName", &Pet::getName)        // Getter
-        .def("greet", &Pet::greet)            // Method
-        .def_readwrite("name", &Pet::m_name);   // Public member variable
+        .def(py::init<const std::string&>())   // Constructor
+        .def("setName", &Pet::setName)         // Setter
+        .def("getName", &Pet::getName)         // Getter
+        .def("greet", &Pet::greet)             // Method
+        .def_readwrite("name", &Pet::m_name);  // Public member variable
 }
